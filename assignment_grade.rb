@@ -1,7 +1,9 @@
 class AssignmentGrade
+  attr_accessor :name, :grades
 
-  def initialize(assignment_name)
-
+  def initialize(name, grades)
+    @name = name
+    @grades = GradeSummary.new(grades)
   end
 
 end
