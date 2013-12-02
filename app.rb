@@ -1,6 +1,4 @@
 require 'csv'
-require 'pry'
-require 'json'
 require_relative 'student'
 require_relative 'final_grade'
 require_relative 'assignment_grade'
@@ -10,35 +8,33 @@ require_relative 'student_reader'
 require_relative 'grade'
 require_relative 'student_writer'
 require_relative 'assignment'
+require_relative 'grade_report'
+require_relative 'student_zone'
+require_relative 'assignment_zone'
 
 filename = 'assignments.csv'
 
-students = StudentReader.new(filename)
-students = students.gather_info
-students = students.sort_by {|student| student.last_name}
-writing_to_file = []
-
-students.each do |student|
-  output = student.get_info
-  output.display_information
-  writing_to_file << output.prepare_to_write
+def clear_screen
+  puts "\e[H\e[2J"
 end
 
-# print "What file would you like to export to?: "
-# filename_to_write_to = gets.chomp
-# if filename_to_write_to.include?('.csv')
-#   writing_to_file = StudentWriter.new(writing_to_file)
-#   writing_to_file.export(filename_to_write_to)
-# else
-#   puts "Please use a .csv extension"
-#   exit
-# end
+clear_screen
+puts "What would you like to do?"
+puts "1) See Student Information"
+puts "2) See Assignment Grades"
+puts ""
+input = gets.chomp.to_i
+clear_screen
 
-grades = GradeReader.new(filename)
-grades = grades.separate_grades
-assignments = []
-grades.each do |key, value|
-  assignment = AssignmentGrade.new(key, value)
-  assignments << assignment
+if input == 1
+  students = StudentZone.new(filename)
+  students.make_student_list
+  students.display_student_info
+  students.write_to_file
+elsif input == 2
+  grades = AssignmentZone.new(filename)
+  grades.compile_grades
+  grades.display_grades
+else
+  puts "Please enter a valid number"
 end
-binding.pry

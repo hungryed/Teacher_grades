@@ -1,5 +1,6 @@
 class FinalGrade
-  attr_accessor :first_name, :last_name, :grades, :average, :final_grade
+  attr_accessor :first_name, :last_name, :grades,
+                 :average, :final_grade
 
   def initialize(first_name, last_name, grades, average)
     @first_name = first_name
